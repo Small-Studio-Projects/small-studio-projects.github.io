@@ -1,4 +1,4 @@
-name: pages build and deployment
+name: Deploy static content to Pages
 
 on:
   push:
@@ -22,11 +22,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Configure Pages
+      - name: Setup Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: false
-      - name: Upload Pages artifact
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: "."
