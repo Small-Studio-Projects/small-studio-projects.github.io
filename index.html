@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Small Studio Projects — Small studio, big systems</title>
+  <meta name="description" content="Small Studio Projects — a small studio building precise developer tools and infrastructure. cn-g, Hanakasu, and more.">
+  <meta property="og:title" content="Small Studio Projects">
+  <meta property="og:description" content="Small studio, big systems. We build developer tools and infrastructure — free-tier first.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://smallstudio.is-a.dev">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #171717;
+      --white: #ffffff;
+      --gray-600: #4d4d4d;
+      --gray-500: #666666;
+      --gray-400: #808080;
+      --gray-100: #ebebeb;
+      --gray-50: #fafafa;
+      --link-blue: #0072f5;
+      --develop-blue: #0a72ef;
+      --preview-pink: #de1d8d;
+      --ship-red: #ff5b4f;
+      --border-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+      --card-shadow: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px, rgba(0,0,0,0.04) 0px 8px 8px -8px, #fafafa 0px 0px 0px 1px;
+      --focus: hsla(212, 100%, 48%, 1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      font-feature-settings: "liga" 1;
+      background: var(--white);
+      color: var(--black);
+      -webkit-font-smoothing: antialiased;
+    }
+    .mono { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+    /* Navigation */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(8px);
+      box-shadow: var(--border-shadow);
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto; padding: 16px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--black); }
+    .logo-mark {
+      width: 28px; height: 28px; border-radius: 6px;
+      background: var(--black); color: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600; font-size: 13px; letter-spacing: -0.5px;
+    }
+    .logo-text { font-weight: 600; font-size: 15px; letter-spacing: -0.4px; }
+    .nav-links { display: flex; align-items: center; gap: 32px; }
+    .nav-links a {
+      font-size: 14px; font-weight: 500; color: var(--black);
+      text-decoration: none; transition: opacity 0.15s;
+    }
+    .nav-links a:hover { opacity: 0.6; }
+    .nav-cta {
+      background: var(--black); color: var(--white);
+      border: none; border-radius: 6px; padding: 8px 16px;
+      font-family: inherit; font-size: 14px; font-weight: 500;
+      cursor: pointer; text-decoration: none; transition: opacity 0.15s;
+    }
+    .nav-cta:hover { opacity: 0.8; }
+    .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 20px; height: 2px; background: var(--black); margin: 4px 0; }
+
+    /* Hero */
+    .hero {
+      max-width: 1200px; margin: 0 auto; padding: 120px 24px 80px;
+      text-align: center; position: relative;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 600px 300px at 20% 10%, rgba(10,114,239,0.06), transparent),
+        radial-gradient(ellipse 600px 300px at 80% 20%, rgba(222,29,141,0.05), transparent),
+        radial-gradient(ellipse 500px 250px at 50% 80%, rgba(255,91,79,0.05), transparent);
+      pointer-events: none;
+    }
+    .hero-inner { position: relative; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #ebf5ff; color: #0068d6;
+      border-radius: 9999px; padding: 0 10px; height: 24px;
+      font-size: 12px; font-weight: 500; margin-bottom: 32px;
+    }
+    .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: #0068d6; }
+    h1 {
+      font-size: 72px; font-weight: 600; line-height: 1.05;
+      letter-spacing: -3.6px; max-width: 900px; margin: 0 auto 24px;
+    }
+    .hero-sub {
+      font-size: 20px; font-weight: 400; line-height: 1.8;
+      color: var(--gray-600); max-width: 640px; margin: 0 auto 40px;
+    }
+    .hero-actions { display: flex; gap: 12px; justify-content: center; }
+    .btn {
+      font-family: inherit; font-size: 14px; font-weight: 500;
+      border-radius: 6px; padding: 10px 18px; cursor: pointer;
+      text-decoration: none; transition: all 0.15s; display: inline-block;
+    }
+    .btn-dark { background: var(--black); color: var(--white); border: none; }
+    .btn-dark:hover { opacity: 0.85; }
+    .btn-ghost {
+      background: var(--white); color: var(--black);
+      box-shadow: var(--border-shadow); border: none;
+    }
+    .btn-ghost:hover { box-shadow: rgba(0,0,0,0.12) 0px 0px 0px 1px; }
+
+    /* Section headers */
+    .section { max-width: 1200px; margin: 0 auto; padding: 96px 24px; }
+    .section-head { text-align: center; margin-bottom: 64px; }
+    .section-tag { font-size: 13px; font-weight: 500; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
+    .section-title { font-size: 40px; font-weight: 600; letter-spacing: -2px; line-height: 1.2; margin-bottom: 16px; }
+    .section-sub { font-size: 18px; color: var(--gray-600); line-height: 1.6; max-width: 560px; margin: 0 auto; }
+
+    /* Workflow pipeline */
+    .pipeline {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 24px; margin-top: 48px;
+    }
+    .pipeline-step {
+      padding: 32px; border-radius: 8px; background: var(--white);
+      box-shadow: var(--card-shadow); text-align: left;
+    }
+    .pipeline-label { font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+    .pipeline-title { font-size: 24px; font-weight: 600; letter-spacing: -0.96px; margin-bottom: 8px; }
+    .pipeline-desc { font-size: 16px; color: var(--gray-600); line-height: 1.6; }
+    .develop .pipeline-label { color: var(--develop-blue); }
+    .preview .pipeline-label { color: var(--preview-pink); }
+    .ship .pipeline-label { color: var(--ship-red); }
+
+    /* Projects grid */
+    .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .project-card {
+      padding: 32px; border-radius: 8px; background: var(--white);
+      box-shadow: var(--card-shadow); display: flex; flex-direction: column; gap: 16px;
+      transition: box-shadow 0.2s; text-decoration: none; color: inherit;
+    }
+    .project-card:hover { box-shadow: rgba(0,0,0,0.12) 0px 0px 0px 1px, rgba(0,0,0,0.06) 0px 4px 12px; }
+    .project-status {
+      align-self: flex-start; font-size: 12px; font-weight: 500;
+      border-radius: 9999px; padding: 0 10px; height: 22px; line-height: 22px;
+    }
+    .status-active { background: #ebf5ff; color: #0068d6; }
+    .status-beta { background: #f5ebff; color: #7928ca; }
+    .status-coming { background: var(--gray-50); color: var(--gray-500); }
+    .project-name { font-size: 24px; font-weight: 600; letter-spacing: -0.96px; }
+    .project-desc { font-size: 16px; color: var(--gray-600); line-height: 1.6; flex-grow: 1; }
+    .project-stack { display: flex; flex-wrap: wrap; gap: 8px; }
+    .stack-tag {
+      font-family: 'Geist Mono', monospace; font-size: 12px; font-weight: 500;
+      background: var(--gray-50); color: var(--gray-500);
+      border-radius: 4px; padding: 3px 8px;
+    }
+    .project-link { font-size: 14px; font-weight: 500; color: var(--link-blue); text-decoration: none; }
+    .project-link:hover { text-decoration: underline; }
+
+    /* Principles */
+    .principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .principle {
+      padding: 32px; border-radius: 8px; background: var(--white);
+      box-shadow: var(--border-shadow);
+    }
+    .principle-num { font-family: 'Geist Mono', monospace; font-size: 13px; color: var(--gray-400); margin-bottom: 16px; }
+    .principle-title { font-size: 20px; font-weight: 600; letter-spacing: -0.6px; margin-bottom: 8px; }
+    .principle-desc { font-size: 16px; color: var(--gray-600); line-height: 1.6; }
+
+    /* Contact / CTA */
+    .cta {
+      max-width: 1200px; margin: 0 auto; padding: 96px 24px 120px; text-align: center;
+    }
+    .cta-box {
+      background: var(--black); color: var(--white);
+      border-radius: 12px; padding: 64px 32px;
+    }
+    .cta-title { font-size: 40px; font-weight: 600; letter-spacing: -2px; margin-bottom: 16px; }
+    .cta-sub { font-size: 18px; color: rgba(255,255,255,0.7); line-height: 1.6; max-width: 480px; margin: 0 auto 32px; }
+    .btn-white { background: var(--white); color: var(--black); border: none; }
+    .btn-white:hover { opacity: 0.9; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--gray-100);
+      padding: 40px 24px;
+    }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      color: var(--gray-500); font-size: 14px;
+    }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { color: var(--gray-500); text-decoration: none; font-weight: 500; }
+    .footer-links a:hover { color: var(--black); }
+    .footer-mono { font-family: 'Geist Mono', monospace; font-size: 12px; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      h1 { font-size: 48px; letter-spacing: -2.4px; }
+      .pipeline, .projects-grid, .principles { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .hamburger { display: block; }
+      .hero { padding: 80px 24px 48px; }
+      .section { padding: 64px 24px; }
+      .cta-title { font-size: 32px; letter-spacing: -1.6px; }
+    }
+    @media (max-width: 480px) {
+      h1 { font-size: 36px; letter-spacing: -1.8px; }
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-inner">
+      <a class="logo" href="/">
+        <span class="logo-mark">SSP</span>
+        <span class="logo-text">Small Studio Projects</span>
+      </a>
+      <div class="nav-links">
+        <a href="#projects">Projects</a>
+        <a href="#principles">Principles</a>
+        <a href="#contact">Contact</a>
+        <a class="nav-cta" href="https://github.com/small-studio-projects">GitHub →</a>
+      </div>
+      <button class="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge"><span class="dot"></span> Small studio · big systems · $0 budget</div>
+      <h1>Precise tools for infrastructure that runs itself.</h1>
+      <p class="hero-sub">Small Studio Projects builds developer tools and cloud infrastructure — free-tier first, engineered to last. Every project ships lean, observable, and automated.</p>
+      <div class="hero-actions">
+        <a class="btn btn-dark" href="#projects">Explore projects</a>
+        <a class="btn btn-ghost" href="https://github.com/small-studio-projects" target="_blank" rel="noopener">View GitHub →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workflow -->
+  <section class="section" id="workflow">
+    <div class="section-head">
+      <div class="section-tag">How we work</div>
+      <div class="section-title">Develop. Preview. Ship.</div>
+      <div class="section-sub">A tight loop backed by AI orchestration, GitOps, and free-tier infrastructure that never surprises you with a bill.</div>
+    </div>
+    <div class="pipeline">
+      <div class="pipeline-step develop">
+        <div class="pipeline-label">Develop</div>
+        <div class="pipeline-title">Design with intent</div>
+        <div class="pipeline-desc">Architecture decisions documented as ADRs. AI-orchestrated coding with human review at every gate.</div>
+      </div>
+      <div class="pipeline-step preview">
+        <div class="pipeline-label">Preview</div>
+        <div class="pipeline-title">Verify everything</div>
+        <div class="pipeline-desc">Tests, linting, and CI run on free GitHub Actions. Nothing ships without green checks.</div>
+      </div>
+      <div class="pipeline-step ship">
+        <div class="pipeline-label">Ship</div>
+        <div class="pipeline-title">Deploy automatically</div>
+        <div class="pipeline-desc">GitOps-driven deploys to free-tier infrastructure. Cost guards alert at the first cent.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section class="section" id="projects">
+    <div class="section-head">
+      <div class="section-tag">Projects</div>
+      <div class="section-title">What we're building</div>
+      <div class="section-sub">A dependency knowledge graph, a personal finance app, and the infrastructure under them all.</div>
+    </div>
+    <div class="projects-grid">
+      <a class="project-card" href="https://github.com/small-studio-projects/cn-g" target="_blank" rel="noopener">
+        <span class="project-status status-beta">Pre-alpha</span>
+        <div class="project-name">cn-g</div>
+        <p class="project-desc">A knowledge graph of every dependency in an engineering organization — services, APIs, databases, topics. Answer "what breaks if I change X?" before it breaks.</p>
+        <div class="project-stack">
+          <span class="stack-tag">Go</span><span class="stack-tag">Neo4j</span><span class="stack-tag">Kafka</span><span class="stack-tag">OpenTelemetry</span>
+        </div>
+        <span class="project-link">View project →</span>
+      </a>
+      <a class="project-card" href="https://github.com/Umeshfarrow/Hanakasu" target="_blank" rel="noopener">
+        <span class="project-status status-active">In development</span>
+        <div class="project-name">Hanakasu</div>
+        <p class="project-desc">A personal finance manager for Android — transactions, budgets, goals, and analytics. Modern Compose UI with a v2 Room database at its core.</p>
+        <div class="project-stack">
+          <span class="stack-tag">Kotlin</span><span class="stack-tag">Compose</span><span class="stack-tag">Hilt</span><span class="stack-tag">Room</span>
+        </div>
+        <span class="project-link">View project →</span>
+      </a>
+      <a class="project-card" href="https://github.com/small-studio-projects/terraform-oci" target="_blank" rel="noopener">
+        <span class="project-status status-active">Active</span>
+        <div class="project-name">terraform-oci</div>
+        <p class="project-desc">Infrastructure as code for the studio's home — OCI Always Free, budget tripwires at the first cent, idle-reclaim guards, and containerized workloads.</p>
+        <div class="project-stack">
+          <span class="stack-tag">Terraform</span><span class="stack-tag">OCI</span><span class="stack-tag">Docker</span><span class="stack-tag">CI/CD</span>
+        </div>
+        <span class="project-link">View project →</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Principles -->
+  <section class="section" id="principles">
+    <div class="section-head">
+      <div class="section-tag">Principles</div>
+      <div class="section-title">How we think</div>
+    </div>
+    <div class="principles">
+      <div class="principle">
+        <div class="principle-num">01</div>
+        <div class="principle-title">Free-tier first</div>
+        <div class="principle-desc">Every service choice starts with what's free and sustainable. Budget alerts trip at the first cent — the bill stays $0.00.</div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">02</div>
+        <div class="principle-title">Automate the loop</div>
+        <div class="principle-desc">AI orchestration, GitOps deploys, and self-improving skills. The studio learns every cycle — no task done twice the hard way.</div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">03</div>
+        <div class="principle-title">Document as we build</div>
+        <div class="principle-desc">ADRs, runbooks, and lessons learned live in a shared vault. Knowledge compounds across machines and projects.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="contact">
+    <div class="cta-box">
+      <div class="cta-title">Built in the open.</div>
+      <p class="cta-sub">Follow the studio's work on GitHub. Questions, ideas, or collaborations — we read everything.</p>
+      <div class="hero-actions">
+        <a class="btn btn-white" href="https://github.com/small-studio-projects" target="_blank" rel="noopener">github.com/small-studio-projects</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-mono">© 2026 Small Studio Projects · kai@smallstudio.dev</div>
+      <div class="footer-links">
+        <a href="https://github.com/small-studio-projects" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/Umeshfarrow" target="_blank" rel="noopener">Umeshfarrow</a>
+        <a href="mailto:umeshfarrow@gmail.com">Email</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Simple mobile nav toggle
+    document.querySelector('.hamburger').addEventListener('click', function() {
+      var links = document.querySelector('.nav-links');
+      if (links.style.display === 'flex') {
+        links.style.display = 'none';
+      } else {
+        links.style.display = 'flex';
+        links.style.flexDirection = 'column';
+        links.style.position = 'absolute';
+        links.style.top = '60px';
+        links.style.right = '24px';
+        links.style.background = '#fff';
+        links.style.padding = '16px';
+        links.style.borderRadius = '8px';
+        links.style.boxShadow = 'rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.08) 0px 8px 24px';
+      }
+    });
+  </script>
+</body>
+</html>
