@@ -10,8 +10,11 @@ permissions:
   pages: write
   id-token: write
 
+# Use a UNIQUE concurrency group. GitHub's internal dynamic Pages workflow
+# holds group "pages" (a stuck uncancellable run blocked it all day, queuing
+# every deploy for hours). This group is separate, so deploys never wait.
 concurrency:
-  group: "pages"
+  group: "pages-deploy"
   cancel-in-progress: true
 
 jobs:
