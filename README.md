@@ -1,6 +1,6 @@
-# Small Studio Projects — Website
+# Small Studio — Website
 
-The official website for Small Studio Projects, hosted on **GitHub Pages** (free tier, $0.0 budget).
+The official website for Small Studio, hosted on **GitHub Pages** (free tier, $0.0 budget).
 
 ## Live URLs
 
