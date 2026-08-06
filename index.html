@@ -9,6 +9,11 @@
   <meta property="og:description" content="Small Studio is a one-engineer, AI-amplified studio. We ship a dependency intelligence platform (cn-g) and a personal finance app (Hanakasu) — built and run by AI agents on a $0.00 infrastructure.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://smallstudio.is-a.dev">
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="canonical" href="https://small-studio-projects.github.io/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Small Studio — Serious software, zero budget">
+  <meta name="twitter:description" content="Small Studio is a one-engineer, AI-amplified studio. We ship a dependency intelligence platform (cn-g) and a personal finance app (Hanakasu) — built and run by AI agents on a $0.00 infrastructure.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%230A0A0A%22/><text x=%2250%22 y=%2268%22 font-size=%2250%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22monospace%22 font-weight=%22600%22>SS</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -136,6 +141,52 @@
       padding: 200px 32px 100px;
       position: relative;
     }
+
+    /* Ambient hero glow */
+    .hero-glow {
+      position: absolute; inset: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+    .hero-glow span {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      will-change: transform;
+    }
+    .hero-glow .orb-1 {
+      width: 540px; height: 540px;
+      top: -140px; left: -120px;
+      background: radial-gradient(circle, rgba(108,92,231,0.5), transparent 65%);
+      opacity: 0.55;
+      animation: drift-a 22s ease-in-out infinite alternate;
+    }
+    .hero-glow .orb-2 {
+      width: 480px; height: 480px;
+      top: 80px; right: -100px;
+      background: radial-gradient(circle, rgba(253,121,168,0.38), transparent 65%);
+      opacity: 0.5;
+      animation: drift-b 26s ease-in-out infinite alternate;
+    }
+    .hero-glow .orb-3 {
+      width: 400px; height: 400px;
+      bottom: -60px; left: 34%;
+      background: radial-gradient(circle, rgba(255,91,79,0.3), transparent 65%);
+      opacity: 0.5;
+      animation: drift-c 30s ease-in-out infinite alternate;
+    }
+    @keyframes drift-a {
+      from { transform: translate3d(0, 0, 0) scale(1); }
+      to { transform: translate3d(64px, 44px, 0) scale(1.08); }
+    }
+    @keyframes drift-b {
+      from { transform: translate3d(0, 0, 0) scale(1.05); }
+      to { transform: translate3d(-52px, 32px, 0) scale(0.94); }
+    }
+    @keyframes drift-c {
+      from { transform: translate3d(0, 0, 0) scale(1); }
+      to { transform: translate3d(32px, -42px, 0) scale(1.1); }
+    }
     .hero-tag {
       display: inline-flex; align-items: center; gap: 10px;
       font-family: var(--font-mono); font-size: 12.5px; letter-spacing: 0.4px;
@@ -172,9 +223,15 @@
     .hero h1 .line:nth-child(3) span { animation-delay: 0.24s; }
     @keyframes rise { to { transform: translateY(0); } }
     .hero h1 .accent-word {
-      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+      background: linear-gradient(120deg, var(--accent) 0%, var(--accent-2) 40%, var(--accent-3) 70%, var(--accent) 100%);
+      background-size: 200% 100%;
       -webkit-background-clip: text; background-clip: text;
       color: transparent;
+      animation: gradientShift 6s ease-in-out infinite alternate;
+    }
+    @keyframes gradientShift {
+      from { background-position: 0% 50%; }
+      to { background-position: 100% 50%; }
     }
     .hero-sub {
       font-size: clamp(17px, 2vw, 21px);
@@ -403,6 +460,33 @@
     .stat-num .accent { color: var(--accent); }
     .stat-label { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink-faint); }
 
+    /* Stack — free infra strip */
+    .stack-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    }
+    .stack-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 22px 24px;
+      border-radius: var(--radius);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      font-family: var(--font-mono); font-size: 14px; font-weight: 500;
+      color: var(--ink);
+      transition: transform 0.3s var(--ease), border-color 0.3s, box-shadow 0.3s;
+    }
+    .stack-item .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .stack-item:nth-child(3n+1) .dot { background: var(--accent); box-shadow: 0 0 12px rgba(108,92,231,0.7); }
+    .stack-item:nth-child(3n+2) .dot { background: var(--accent-2); box-shadow: 0 0 12px rgba(253,121,168,0.7); }
+    .stack-item:nth-child(3n+3) .dot { background: var(--accent-3); box-shadow: 0 0 12px rgba(255,91,79,0.7); }
+    .stack-item:hover {
+      transform: translateY(-3px);
+      border-color: var(--line-strong);
+      box-shadow: 0 10px 32px rgba(108,92,231,0.16), 0 0 0 1px rgba(108,92,231,0.1);
+    }
+
     /* CTA */
     .cta-section { max-width: 1280px; margin: 0 auto; padding: 60px 32px 160px; }
     .cta-box {
@@ -455,11 +539,16 @@
       .hero { padding: 140px 24px 70px; }
       .section { padding: 90px 24px; }
       .pipeline, .projects-grid, .principles, .stats { grid-template-columns: 1fr; }
+      .stack-grid { grid-template-columns: repeat(2, 1fr); }
       .project-card.featured { grid-column: auto; }
       .stat { border-right: none; border-bottom: 1px solid var(--line); padding: 32px 24px; }
       .stat:last-child { border-bottom: none; }
       .cta-box { padding: 64px 24px; }
       .footer-inner { flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 560px) {
+      .stack-grid { grid-template-columns: 1fr; }
+      .stack-item { padding: 18px 20px; }
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
@@ -484,6 +573,7 @@
       </a>
       <div class="nav-links">
         <a href="#work">Work</a>
+        <a href="#stack">Stack</a>
         <a href="#principles">Principles</a>
         <a href="#contact">Contact</a>
         <a class="nav-cta" href="https://github.com/small-studio-projects" target="_blank" rel="noopener">GitHub ↗</a>
@@ -493,6 +583,11 @@
 
   <!-- Hero -->
   <header class="hero">
+    <div class="hero-glow" aria-hidden="true">
+      <span class="orb-1"></span>
+      <span class="orb-2"></span>
+      <span class="orb-3"></span>
+    </div>
     <div class="hero-tag"><span class="pulse"></span> One engineer · AI-amplified · $0.00 infrastructure</div>
     <h1>
       <span class="line"><span>Small studio.</span></span>
@@ -602,6 +697,22 @@
         <div class="stat-num"><span class="accent">1</span>+AI</div>
         <div class="stat-label">Engineer, AI-amplified</div>
       </div>
+    </div>
+  </section>
+
+  <!-- Stack -->
+  <section class="section" id="stack" style="padding-top: 0;">
+    <div class="section-head reveal">
+      <div class="section-tag">Built on free-tier infra</div>
+      <h2 class="section-title">The free stack behind the studio</h2>
+    </div>
+    <div class="stack-grid">
+      <div class="stack-item reveal reveal-delay-1"><span class="dot"></span>OCI Always Free</div>
+      <div class="stack-item reveal reveal-delay-2"><span class="dot"></span>GitHub Actions</div>
+      <div class="stack-item reveal reveal-delay-3"><span class="dot"></span>GitHub Pages</div>
+      <div class="stack-item reveal reveal-delay-1"><span class="dot"></span>free-for.dev</div>
+      <div class="stack-item reveal reveal-delay-2"><span class="dot"></span>Obsidian</div>
+      <div class="stack-item reveal reveal-delay-3"><span class="dot"></span>Terraform</div>
     </div>
   </section>
 
